@@ -1,5 +1,6 @@
 from Functions import jarvis
 import time
+
 # play sounds for specific work
 jarvis.play_sound("wake")
 time.sleep(1.5)
@@ -75,3 +76,4 @@ jarvis.brightness_down(15)
 jarvis.brightness_down() #if no value then its 5
 jarvis.brightness_up(15)
 jarvis.brightness_down() #if no value then its 5
+

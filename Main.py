@@ -1,4 +1,4 @@
-from Functions import jarvis
+from Functions import jarvis, router
 from State import a
 
 def main():
@@ -12,6 +12,6 @@ def main():
             continue
         elif "jarvis" in wake or "जार्विस" in wake1:
             jarvis.speak("assistant_wake")
-            jarvis.router()
+            router()
 
 main()

@@ -5,16 +5,18 @@ import asyncio
 import tempfile
 import edge_tts
 import webbrowser
+from State import a
 from pytube import Search
 from datetime import datetime
 import speech_recognition as sr
-from State import a
-from Utilies import pick_response, extract_music_name, extract_number
 from Dictionaries import SOUNDS, APP_ALIASES
-from contextlib import redirect_stdout, redirect_stderr
 from Decoder import decode, decode_action,decode_intent
+from contextlib import redirect_stdout, redirect_stderr
+from Utilies import pick_response, extract_music_name, extract_number
+
+
 class Jarvis(): 
-    async def speak_mixed(self, text):
+    async def speak_mixed(self, text:str):
         """
         The function `speak_mixed` asynchronously generates speech from text using a specific voice and
         plays it back using the `afplay` command in Python.
@@ -41,7 +43,7 @@ class Jarvis():
             if os.path.exists(temp_path):
                 os.remove(temp_path)
 
-    def speak_offline(self, text):
+    def speak_offline(self, text:str):
         """
         The function `speak_offline` takes a text input, escapes double quotes, and uses the `say`
         command in macOS to speak the text offline with the voice "Kiyara" at a rate of 180 words per
@@ -54,7 +56,7 @@ class Jarvis():
         safe_text = text.replace('"', '\\"')
         os.system(f'say -v Kiyara -r 180 "{safe_text}"')
 
-    def speak(self,text):
+    def speak(self,text:str):
         """
         The function `speak` in the provided Python code handles speaking text either online or offline,
         utilizing asyncio for asynchronous operations.
@@ -118,7 +120,7 @@ class Jarvis():
             print("Listening error:", e)
             return ""
         
-    def play_sound(self,sound_type):
+    def play_sound(self,sound_type:str):
         """
         The function `play_sound` plays a specified sound file using the `afplay` command in Python.
         
@@ -136,7 +138,7 @@ class Jarvis():
         sound_path = os.path.join(BASE_DIR, "Sounds", SOUNDS[sound_type])
         os.system(f'afplay "{sound_path}" &')
    
-    def volume(self, action, value=None):
+    def volume(self, action:str, value=None):
         """
         The function allows for setting, increasing, decreasing, muting, and unmuting the volume on a
         system using AppleScript in Python.
@@ -218,7 +220,7 @@ class Jarvis():
             self.play_sound("error")
             self.speak(pick_response("something_wrong"))
 
-    def brightness_up(self, steps=5):
+    def brightness_up(self, steps:int=5):
         """
         The function `brightness_up` increases the brightness of the screen by sending key codes using
         AppleScript and provides feedback through sound and speech.
@@ -237,7 +239,7 @@ class Jarvis():
             self.play_sound("error")
             self.speak(pick_response("something_wrong"))
 
-    def brightness_down(self,steps=5):
+    def brightness_down(self,steps:int=5):
         """
         The function `brightness_down` decreases the brightness of the screen by sending key codes using
         AppleScript in Python.
@@ -259,7 +261,7 @@ class Jarvis():
             self.play_sound("error")
             self.speak(pick_response("something_wrong"))
 
-    def play(self, song):
+    def play(self, song:str):
         """
         The `play` function plays a song by searching for it, opening the first result in a web browser,
         and providing feedback through sound and speech, handling errors gracefully.
@@ -290,7 +292,7 @@ class Jarvis():
             self.speak(pick_response("something_wrong"))
             print(f'Error: {e}')
 
-    def open_app(self,app_name):
+    def open_app(self,app_name:str):
         """
         The function `open_app` attempts to open a specified application using its alias, playing sounds
         and providing feedback messages in case of errors.
@@ -316,7 +318,7 @@ class Jarvis():
             self.play_sound("error")
             self.speak(pick_response("something_wrong"))
 
-    def close_app(self,app_name):
+    def close_app(self,app_name:str):
         """
         The function `close_app` attempts to close a specified application using its alias, playing
         sounds and providing feedback messages in case of errors.
@@ -505,7 +507,7 @@ class Jarvis():
             self.play_sound("error")
             self.speak(pick_response("something_wrong"))
 
-    def bluetooth_on(self, a=True):
+    def bluetooth_on(self, a:bool=True):
         """
         The function `bluetooth_on` turns on Bluetooth using the `blueutil` command and provides audio
         feedback based on the result.
@@ -525,7 +527,7 @@ class Jarvis():
             self.play_sound("error")
             self.speak(pick_response("something_wrong"))
 
-    def bluetooth_off(self, a=True):
+    def bluetooth_off(self, a:bool=True):
         """
         The function `bluetooth_off` turns off Bluetooth using the `blueutil` command and provides audio
         feedback based on the result.
@@ -545,7 +547,7 @@ class Jarvis():
             self.play_sound("error")
             self.speak(pick_response("something_wrong"))
 
-    def wifi_on(self, a=True):
+    def wifi_on(self, a:bool=True):
         """
         The function `wifi_on` turns on the Wi-Fi connection and provides audio and spoken feedback
         based on the result.
@@ -565,7 +567,7 @@ class Jarvis():
             self.play_sound("error")
             self.speak(pick_response("something_wrong"))
 
-    def wifi_off(self, a=True):
+    def wifi_off(self, a:bool=True):
         """
         The function `wifi_off` turns off the wifi connection and provides audio feedback based on the
         success or failure of the operation.
@@ -605,7 +607,7 @@ class Jarvis():
         self.play_sound("done")
         self.speak(pick_response("airplane_off"))
 
-    def ask_action_question(self, intent):
+    def ask_action_question(self, intent:str):
         """
         The function `ask_action_question` returns a specific question based on the given intent or a
         default question if the intent is not recognized.
@@ -639,149 +641,147 @@ class Jarvis():
         else:
             self.speak("Humour mode off 🙂")
 
-    def router(self):
-        while True:
-            command = self.listen()
-            if not command:
+jarvis = Jarvis()
+
+def router():
+    while True:
+        command = jarvis.listen()
+        if not command:
+            continue
+
+        intent, action, value = decode(command)
+        print(intent,action,value)
+        if intent is None and action in ["lock", "screenshot"]:
+            intent = "system"
+        elif intent is None and action in ["date", "day", "battery", "uptime", "time"]:
+            intent = "info"
+        elif intent is None and action in ["stop", "sleep", "wake", "HUMOUR_WORDS"]:
+            intent = "assistant"
+        elif intent is None and action is "play":
+            intent = "music"
+
+        # -------- ASKING PHASE --------
+
+        # intent missing but action exists
+        if intent is None and action is not None:
+            jarvis.speak(f"What should I {action}?")
+            jarvis.play_sound("start")
+            follow_up = jarvis.listen()
+            jarvis.play_sound("done")
+            intent = decode_intent(follow_up)
+
+            if intent is None:
+                jarvis.speak("Sorry, I didn't understand.")
                 continue
 
-            intent, action, value = decode(command)
-            print(intent,action,value)
-            if intent is None and action in ["lock", "screenshot"]:
-                intent = "system"
-            elif intent is None and action in ["date", "day", "battery", "uptime", "time"]:
-                intent = "info"
-            elif intent is None and action in ["stop", "sleep", "wake", "HUMOUR_WORDS"]:
-                intent = "assistant"
+        # intent exists but action missing
+        elif intent is not None and action is None:
+            jarvis.speak(jarvis.ask_action_question(intent))
+            jarvis.play_sound("start")
+            follow_up = jarvis.listen()
+            jarvis.play_sound("done")
+            action = decode_action(follow_up)
 
-            # -------- ASKING PHASE --------
+            if action is None:
+                jarvis.speak("Sorry, I didn't understand.")
+                continue
 
-            # intent missing but action exists
-            if intent is None and action is not None:
-                self.speak(f"What should I {action}?")
-                self.play_sound("start")
-                follow_up = self.listen()
-                self.play_sound("done")
-                intent = decode_intent(follow_up)
+        # action is set but value missing
+        elif action == "set" and value is None:
+            jarvis.speak(jarvis.ask_value_question(intent))
+            jarvis.play_sound("start")
+            follow_up = jarvis.listen()
+            jarvis.play_sound("done")
+            value = extract_number(follow_up)
 
-                if intent is None:
-                    self.speak("Sorry, I didn't understand.")
-                    return
+            if value is None:
+                jarvis.speak("Sorry, I didn't understand.")
+                continue
+        
+        a.last_action = action
+        a.last_intent = intent
+        a.last_value = value
+        a.state_update("thinking")
+        print(intent,action,value)
+        # -------- EXECUTION PHASE --------
 
-            # intent exists but action missing
-            elif intent is not None and action is None:
-                self.speak(self.ask_action_question(intent))
-                self.play_sound("start")
-                follow_up = self.listen()
-                self.play_sound("done")
-                action = decode_action(follow_up)
+        if intent == "wifi":
+            if action == "on":
+                jarvis.wifi_on()
+            elif action == "off":
+                jarvis.wifi_off()
+            elif action == "status":
+                jarvis.wifi_status()
 
-                if action is None:
-                    self.speak("Sorry, I didn't understand.")
-                    return
+        elif intent == "bluetooth":
+            if action == "on":
+                jarvis.bluetooth_on()
+            elif action == "off":
+                jarvis.bluetooth_off()
+            elif action == "status":
+                jarvis.bluetooth_status()
 
-            # action is set but value missing
-            elif action == "set" and value is None:
-                self.speak(self.ask_value_question(intent))
-                self.play_sound("start")
-                follow_up = self.listen()
-                self.play_sound("done")
-                value = extract_number(follow_up)
+        elif intent == "volume":
+            jarvis.volume(action, value)
 
-                if value is None:
-                    self.speak("Sorry, I didn't understand.")
-                    return
-            
-            a.last_action = action
-            a.last_intent = intent
-            a.last_value = value
-            a.state_update("thinking")
-            print(intent,action,value)
-            # -------- EXECUTION PHASE --------
+        elif intent == "brightness":
+            if action == "increase":
+                jarvis.brightness_up(value or 15)
+            elif action == "decrease":
+                jarvis.brightness_down(value or 15)
 
-            if intent == "wifi":
-                if action == "on":
-                    self.wifi_on()
-                elif action == "off":
-                    self.wifi_off()
-                elif action == "status":
-                    self.wifi_status()
-
-            elif intent == "bluetooth":
-                if action == "on":
-                    self.bluetooth_on()
-                elif action == "off":
-                    self.bluetooth_off()
-                elif action == "status":
-                    self.bluetooth_status()
-
-            elif intent == "volume":
-                self.volume(action, value)
-
-            elif intent == "brightness":
-                if action == "increase":
-                    self.brightness_up(value or 5)
-                elif action == "decrease":
-                    self.brightness_down(value or 5)
-                elif action == "set":
-                    self.brightness_set(value)
-
-            elif intent == "music":
-                if action == "play":
-                    song = extract_music_name(command)
+        elif intent == "music":
+            if action == "play":
+                song = extract_music_name(command)
+                if song:
+                    jarvis.play(song)
+                else:
+                    jarvis.speak("Which song should I play?")
+                    jarvis.play_sound("start")
+                    follow_up = jarvis.listen()
+                    jarvis.play_sound("done")
+                    a.state_update("thinking")
+                    song = extract_music_name(follow_up)
                     if song:
-                        self.play(song)
+                        jarvis.play(song)
                     else:
-                        self.speak("Which song should I play?")
-                        self.play_sound("start")
-                        follow_up = self.listen()
-                        self.play_sound("done")
-                        a.state_update("thinking")
-                        song = extract_music_name(follow_up)
-                        if song:
-                            self.play(song)
-                        else:
-                            self.play_sound("error")
-                            self.speak(pick_response("something_wrong"))
+                        jarvis.play_sound("error")
+                        jarvis.speak(pick_response("something_wrong"))
 
-            elif intent == "system":
-                if action == "lock":
-                    self.lock_screen()
-                elif action == "screenshot":
-                    self.take_screenshot()
+        elif intent == "system":
+            if action == "lock":
+                jarvis.lock_screen()
+            elif action == "screenshot":
+                jarvis.take_screenshot()
 
-            elif intent == "info":
-                if action == "time":
-                    self.get_time()
-                elif action == "date":
-                    self.get_date()
-                elif action == "day":
-                    self.get_day()
-                elif action == "battery":
-                    self.battery_status()
-                elif action == "uptime":
-                    self.uptime()
+        elif intent == "info":
+            if action == "time":
+                jarvis.get_time()
+            elif action == "date":
+                jarvis.get_date()
+            elif action == "day":
+                jarvis.get_day()
+            elif action == "battery":
+                jarvis.battery_status()
+            elif action == "uptime":
+                jarvis.uptime()
 
-            elif intent == "assistant":
-                if action == "sleep":
-                    self.speak(pick_response("assistant_sleep"))
-                    a.set_sleep_mode(True)
-                    return
-                elif action == "wake":
-                    self.play_sound("error")
-                    self.speak("Already active...")
-                elif action == "stop":
-                    self.speak(pick_response("assistant_stop"))
-                    a.stop = True
-                    return
+        elif intent == "assistant":
+            if action == "sleep":
+                jarvis.speak(pick_response("assistant_sleep"))
+                a.set_sleep_mode(True)
+                return
+            elif action == "wake":
+                jarvis.play_sound("error")
+                jarvis.speak("Already active...")
+            elif action == "stop":
+                jarvis.speak(pick_response("assistant_stop"))
+                a.stop = True
+                return
+            elif action == "HUMOUR_WORDS":
+                jarvis.toggle_humour()
+            
 
-                elif action == "HUMOUR_WORDS":
-                    self.toggle_humour()
-                
-
-            else:
-                self.play_sound("error")
-                self.speak(pick_response("something_wrong"))
-
-jarvis = Jarvis()
-# jarvis.play("play baby")
+        else:
+            jarvis.play_sound("error")
+            jarvis.speak(pick_response("something_wrong"))

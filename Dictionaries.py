@@ -38,150 +38,136 @@ FILLER_WORDS = {
 }
 
 INTENTS = {
-    "volume": [
-        "volume", "sound", "loudness",
-        "आवाज़", "आवाज", "आवज़",
-        "वॉल्यूम", "साउंड"
-    ],
-
-    "time": [
-        "time", "clock",
-        "समय", "टाइम", "घड़ी"
-    ],
-
-    "assistant": [
-        "jarvis", "जार्विस", "assistant"
-    ],
-
     "wifi": [
-        "wifi", "internet", 
-        "नेट", "वाईफाई", "wi-fi"
+        "wifi", "internet", "wi-fi",
+        "नेट", "वाईफाई", "इंटरनेट"
+    ],
+
+    "bluetooth": [
+        "bluetooth", "blue tooth", "bt",
+        "ब्लूटूथ", "बीटी", "ब्लू-टूथ"s
+    ],
+
+    "volume": [
+        "volume", "sound", "loudness", "audio",
+        "आवाज़", "आवाज", "आवज़", "वॉल्यूम", "साउंड"
     ],
 
     "brightness": [
-        "brightness", "screen", 
-        "रोशनी"
+        "brightness", "screen", "light", "display",
+        "रोशनी", "चमक", "ब्राइटनेस", "स्क्रीन"
     ],
 
     "music": [
-        "music", "song", 
-        "गाना"
-        ],
-
-    "bluetooth": [
-        "bluetooth", "blue tooth",
-        "ब्लूटूथ", "बीटी"
+        "music", "song", "tune", "melody",
+        "गाना", "संगीत", "म्यूजिक", "गीत"
     ],
 
-    "battery": [
-        "battery", "power",
-        "बैटरी", "चार्ज"
+    "system": [
+        "system", "pc", "computer", "device", "machine",
+        "सिस्टम", "कंप्यूटर", "डिवाइस", "यंत्र", "पीसी"
     ],
 
-    "screenshot": [
-        "screenshot", "screen shot",
-        "स्क्रीनशॉट", "स्क्रीन फोटो"
+    "info": [
+        "info", "information", "details", "specs",
+        "जानकारी", "सूचना", "विवरण", "डिटेल्स"
     ],
 
-    "lock": [
-        "lock", "lock screen",
-        "लॉक", "स्क्रीन लॉक"
-    ],
-    
-    "airplane": [
-        "airplane", "flight mode",
-        "एयरप्लेन", "फ्लाइट मोड"
+    "assistant": [
+        "assistant", "jarvis", "helper", "ai",
+        "सहायक", "जार्विस", "असिस्टेंट", "सहायता"
     ]
 }
 
 ACTIONS = {
-    "HUMOUR_WORDS": [
-    # English
-    "humour", "humor", "joke", "jokes", "fun", "funny",
-    "comedy", "comic", "meme", "memes",
-
-    # Hinglish
-    "mazaak", "mazak", "majaak",
-    "hansi", "hasna", "hasao",
-    "chutkula", "chutkule",
-    "masti", "bakchodi",
-
-    # Hindi (Devanagari)
-    "मजाक", "मज़ाक",
-    "हंसी", "हँसी",
-    "चुटकुला", "चुटकुले",
-    "मस्ती", "कॉमेडी", "हास्य"
-],
-
-    "increase": [
-        "increase", "up", "raise", "boost",
-        "बढ़ाओ", "बढ़ा", "ऊपर",
-        "तेज़", "ज्यादा"
-    ],
-
-    "decrease": [
-        "decrease", "down", "lower", "reduce",
-        "कम", "घटाओ", "नीचे", "धीमा"
-    ],
-
-    "mute": [
-        "mute", "silent", "silence",
-        "चुप", "शांत", "म्यूट"
-    ],
-
-    "unmute": [
-        "unmute", "sound on",
-        "चालू", "आवाज़ चालू"
-    ],
-
-    "sleep": [
-        "sleep", "rest", "standby",
-        "सो जाओ", "स्लीप"
-    ],
-
-    "wake": [
-        "wake", "wake up",
-        "जागो", "उठो"
-    ],
-
-    "stop": [
-        "stop", "exit", "quit", "shutdown", 
-        "रुको", "स्टॉप"
+    "set": [
+        "set", "fix", "configure", "adjust",
+        "रखो", "सेट", "ठीक", "समायोजित"
     ],
 
     "on": [
         "on", "start", "enable", 
-        "चालू"
+        "चालू", "शुरू", "सक्षम"
     ],
 
     "off": [
         "off", "disable", 
-        "बंद", "बंद करो"
+        "बंद", "अक्षम"
     ],
 
     "status": [
-        "status", "check", "state",
-        "है", "बताओ", "स्थिति"
-    ],
-    
-    "set": [
-        "set", "fix",
-        "रखो", "सेट"
-    ],
-    
-    "open": [
-        "open", "launch",
-        "खोलो"
+        "status", "check", "state", "condition",
+        "है", "बताओ", "स्थिति", "जांच"
     ],
 
-    "close": [
-        "close", "band",
-        "बंद करो"
+    "increase": [
+        "increase", "up", "raise", "boost", "higher",
+        "बढ़ाओ", "बढ़ा", "ऊपर", "तेज़", "ज्यादा"
+    ],
+
+    "decrease": [
+        "decrease", "down", "lower", "reduce", "less",
+        "कम", "घटाओ", "नीचे", "धीमा", "छोटा"
     ],
 
     "play": [
-        "play", 
-        "चलाओ", "बजाओ"
+        "play", "begin",
+        "चलाओ", "बजाओ", "प्ले"
+    ],
+
+    "lock": [
+        "lock", "lock screen", "secure", 
+        "लॉक", "स्क्रीन लॉक", "सुरक्षित"
+    ],
+
+    "screenshot": [
+        "screenshot", "screen shot", "capture", "snapshot",
+        "स्क्रीनशॉट", "स्क्रीन फोटो", "कैप्चर", "तस्वीर"
+    ],
+
+    "time": [
+        "time", "clock", "hour", "current time",
+        "समय", "टाइम", "घड़ी", "वर्तमान समय"
+    ],
+
+    "date": [
+        "date", "calendar", "today", "day-month-year",
+        "तारीख", "कैलेंडर", "आज की तारीख", "दिनांक"
+    ],
+
+    "day": [
+        "day", "weekday", "today", "which day",
+        "दिन", "सप्ताह का दिन", "आज", "कौन सा दिन"
+    ],
+
+    "battery": [
+        "battery", "power", "charge", "battery life",
+        "बैटरी", "चार्ज", "पावर", "बैटरी जीवन"
+    ],
+
+    "uptime": [
+        "uptime", "running time", "system uptime", "how long",
+        "अपटाइम", "चलने का समय", "कितनी देर"
+    ],
+
+    "sleep": [
+        "sleep", "rest", "standby", "hibernate",
+        "सो जाओ", "स्लीप", "स्टैंडबाय", "आराम"
+    ],
+
+    "wake": [
+        "wake", "wake up", "awaken", "activate",
+        "जागो", "उठो", "जगाओ"
+    ],
+
+    "stop": [
+        "stop", "exit", "quit", "shutdown", "end", "deactivate",
+        "रुको", "स्टॉप", "बंद करो", "खत्म", "छोड़ो"
+    ],
+
+    "humour": [
+        "humour", "humor", "joke", "funny", "comedy", "meme",
+        "मजाक", "हंसी", "चुटकुला", "मज़ाक", "हास्य", "कॉमेडी"
     ]
 }
 
